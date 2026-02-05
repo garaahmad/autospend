@@ -13,13 +13,25 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:app_links/app_links.dart';
 import 'package:autospend/services/huggingface_service.dart';
 import 'dart:io';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:excel/excel.dart' as excel_lib;
+import 'package:path_provider/path_provider.dart';
+import 'package:open_file/open_file.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await BackgroundServiceManager.initializeService();
+
+  // Start background service without awaiting
+  BackgroundServiceManager.initializeService()
+      .then((_) {
+        debugPrint("Background service initialized");
+      })
+      .catchError((e) {
+        debugPrint("Failed to initialize background service: $e");
+      });
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => SettingsProvider(),
@@ -1511,7 +1523,9 @@ class ReportsScreen extends StatefulWidget {
 class _ReportsScreenState extends State<ReportsScreen> {
   final _databaseService = DatabaseService();
   Map<String, double> _categoryData = {};
+  List<TransactionModel> _allTransactions = [];
   bool _isLoading = true;
+  bool _isExporting = false;
 
   @override
   void initState() {
@@ -1521,15 +1535,195 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   Future<void> _loadReports() async {
     final transactions = await _databaseService.getTransactions();
+    print('📊 Loaded ${transactions.length} transactions from database');
+
     final Map<String, double> temp = {};
     for (var tx in transactions) {
       temp[tx.category] = (temp[tx.category] ?? 0) + tx.amount;
+      print(
+        'Transaction: ${tx.merchant} - ${tx.amount} ${tx.currency} - ${tx.category}',
+      );
     }
+
     if (mounted) {
       setState(() {
+        _allTransactions = transactions;
         _categoryData = temp;
         _isLoading = false;
       });
+      print(
+        '✅ State updated: ${_allTransactions.length} transactions, ${_categoryData.length} categories',
+      );
+    }
+  }
+
+  Future<void> _exportToExcel() async {
+    // Check if we have data
+    if (_allTransactions.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'لا توجد معاملات للتصدير!\nNo transactions to export!',
+              style: GoogleFonts.cairo(),
+            ),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+      return;
+    }
+
+    setState(() => _isExporting = true);
+
+    try {
+      // Create Excel file
+      var excel = excel_lib.Excel.createExcel();
+
+      // Rename the default Sheet1 to Transactions
+      // This allows us to work with the default sheet instead of deleting/creating
+      if (excel.sheets.containsKey('Sheet1')) {
+        excel.rename('Sheet1', 'Transactions');
+      }
+
+      // Get the sheet (it should exist now as 'Transactions')
+      var sheet = excel['Transactions'];
+
+      // Add headers
+      sheet.cell(excel_lib.CellIndex.indexByString('A1')).value =
+          excel_lib.TextCellValue('التاجر / Merchant');
+      sheet.cell(excel_lib.CellIndex.indexByString('B1')).value =
+          excel_lib.TextCellValue('المبلغ / Amount');
+      sheet.cell(excel_lib.CellIndex.indexByString('C1')).value =
+          excel_lib.TextCellValue('العملة / Currency');
+      sheet.cell(excel_lib.CellIndex.indexByString('D1')).value =
+          excel_lib.TextCellValue('التصنيف / Category');
+      sheet.cell(excel_lib.CellIndex.indexByString('E1')).value =
+          excel_lib.TextCellValue('التاريخ / Date');
+      sheet.cell(excel_lib.CellIndex.indexByString('F1')).value =
+          excel_lib.TextCellValue('البطاقة / Card');
+
+      // Style headers
+      final headerStyle = excel_lib.CellStyle(
+        bold: true,
+        fontSize: 12,
+        backgroundColorHex: excel_lib.ExcelColor.fromHexString('#4A148C'),
+        fontColorHex: excel_lib.ExcelColor.white,
+        horizontalAlign: excel_lib.HorizontalAlign.Center,
+      );
+
+      for (var col in ['A1', 'B1', 'C1', 'D1', 'E1', 'F1']) {
+        sheet.cell(excel_lib.CellIndex.indexByString(col)).cellStyle =
+            headerStyle;
+      }
+
+      // Add transaction data
+      int row = 2;
+      for (var tx in _allTransactions) {
+        sheet.cell(excel_lib.CellIndex.indexByString('A$row')).value =
+            excel_lib.TextCellValue(tx.merchant);
+        sheet.cell(excel_lib.CellIndex.indexByString('B$row')).value =
+            excel_lib.DoubleCellValue(tx.amount);
+        sheet.cell(excel_lib.CellIndex.indexByString('C$row')).value =
+            excel_lib.TextCellValue(tx.currency);
+        sheet.cell(excel_lib.CellIndex.indexByString('D$row')).value =
+            excel_lib.TextCellValue(tx.category);
+        sheet.cell(excel_lib.CellIndex.indexByString('E$row')).value =
+            excel_lib.TextCellValue(tx.date);
+        sheet.cell(excel_lib.CellIndex.indexByString('F$row')).value =
+            excel_lib.TextCellValue(tx.cardDigits ?? 'N/A');
+
+        // Add simple styling to data rows for readability
+        if (row % 2 == 0) {
+          // Optional: You could add alternate row coloring here if desired
+        }
+        row++;
+      }
+      print('✅ Added ${row - 2} transaction rows to Excel');
+
+      // Create Summary sheet
+      var summarySheet = excel['Summary'];
+      summarySheet.cell(excel_lib.CellIndex.indexByString('A1')).value =
+          excel_lib.TextCellValue('التصنيف / Category');
+      summarySheet.cell(excel_lib.CellIndex.indexByString('B1')).value =
+          excel_lib.TextCellValue('الإجمالي / Total');
+      summarySheet.cell(excel_lib.CellIndex.indexByString('A1')).cellStyle =
+          headerStyle;
+      summarySheet.cell(excel_lib.CellIndex.indexByString('B1')).cellStyle =
+          headerStyle;
+
+      int summaryRow = 2;
+      _categoryData.forEach((category, amount) {
+        summarySheet
+            .cell(excel_lib.CellIndex.indexByString('A$summaryRow'))
+            .value = excel_lib.TextCellValue(
+          category,
+        );
+        summarySheet
+            .cell(excel_lib.CellIndex.indexByString('B$summaryRow'))
+            .value = excel_lib.DoubleCellValue(
+          amount,
+        );
+        summaryRow++;
+      });
+      print('✅ Added ${summaryRow - 2} summary rows to Excel');
+
+      // Save file
+      final directory = await getExternalStorageDirectory();
+      // Ensure we have a valid directory
+      if (directory == null) {
+        throw Exception('Could not access external storage directory');
+      }
+
+      final timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+      final filePath = '${directory.path}/AutoSpend_Report_$timestamp.xlsx';
+      final file = File(filePath);
+
+      // Encode to bytes and save
+      var fileBytes = excel.encode();
+      if (fileBytes != null) {
+        await file.create(recursive: true);
+        await file.writeAsBytes(fileBytes);
+        print(
+          '✅ Excel file successfully written to: $filePath (${fileBytes.length} bytes)',
+        );
+
+        if (mounted) {
+          setState(() => _isExporting = false);
+
+          // Show success message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'تم حفظ التقرير بنجاح ✓\nSaved: $filePath',
+                style: GoogleFonts.cairo(),
+              ),
+              backgroundColor: Colors.green,
+              action: SnackBarAction(
+                label: 'فتح / Open',
+                textColor: Colors.white,
+                onPressed: () => OpenFile.open(filePath),
+              ),
+              duration: const Duration(seconds: 10),
+            ),
+          );
+        }
+      } else {
+        throw Exception('Failed to encode Excel file (bytes check failed)');
+      }
+    } catch (e, stackTrace) {
+      print('❌ Export Error: $e');
+      print('Stack trace: $stackTrace');
+      if (mounted) {
+        setState(() => _isExporting = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('خطأ في التصدير: $e', style: GoogleFonts.cairo()),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
     }
   }
 
@@ -1554,6 +1748,29 @@ class _ReportsScreenState extends State<ReportsScreen> {
           ),
         ),
       ),
+      floatingActionButton: _categoryData.isEmpty
+          ? null
+          : FloatingActionButton.extended(
+              onPressed: _isExporting ? null : _exportToExcel,
+              backgroundColor: Colors.deepPurpleAccent,
+              icon: _isExporting
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Icon(Icons.file_download, color: Colors.white),
+              label: Text(
+                lang == 'ar' ? 'تصدير Excel' : 'Export Excel',
+                style: GoogleFonts.cairo(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _categoryData.isEmpty

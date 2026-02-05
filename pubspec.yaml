@@ -47,6 +47,8 @@ dependencies:
   provider: ^6.1.2
   http: ^1.2.1
   app_links: ^6.3.2
+  excel: ^4.0.6
+  open_file: ^3.5.7
 
 dev_dependencies:
   flutter_test:
