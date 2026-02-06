@@ -24,6 +24,7 @@
 - 🔄 **مراقبة تلقائية**: تتبع المعاملات المالية تلقائياً من إشعارات البنوك
 - 🤖 **ذكاء اصطناعي متقدم**: استخدام نموذج Llama 3.2 لتحليل المعاملات واستخراج البيانات
 - 📊 **تقارير شاملة**: عرض تفصيلي للمصروفات حسب التاجر والفئة
+- 📑 **تصدير للبيانات**: إمكانية تصدير جميع التقارير والمعاملات لملف Excel
 - 🏷️ **تصنيف ذكي**: تصنيف تلقائي للمعاملات مع إمكانية إضافة فئات مخصصة
 - 🌙 **واجهة عصرية**: تصميم Material 3 مع دعم الوضع الليلي
 - 🌐 **دعم متعدد اللغات**: واجهة كاملة بالعربية والإنجليزية
@@ -58,6 +59,7 @@
 ### Data & Storage
 - **SQLite (sqflite)** - قاعدة بيانات محلية
 - **SharedPreferences** - تخزين الإعدادات
+- **Excel** - لتصدير البيانات والتقارير
 - **Path Provider** - إدارة مسارات الملفات
 
 ### Services & Permissions
@@ -103,6 +105,7 @@ lib/
    - تقارير تفصيلية حسب الفئة
    - رسوم بيانية للإنفاق
    - تحليل الأنماط
+   - **جديد**: تصدير التقرير لملف Excel
 
 4. **SettingsScreen** - الإعدادات
    - تبديل اللغة (عربي/إنجليزي)
@@ -162,6 +165,7 @@ flutter run
 <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 <uses-permission android:name="android.permission.WAKE_LOCK" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ```
 
 ### iOS
@@ -291,7 +295,7 @@ String sanitizeData(String text) {
 ## 📈 خطط التطوير المستقبلية
 
 - [ ] دعم المزيد من البنوك والعملات
-- [ ] تصدير التقارير بصيغة PDF/Excel
+- [x] تصدير التقارير بصيغة PDF/Excel
 - [ ] رسوم بيانية تفاعلية
 - [ ] تنبيهات ذكية عند تجاوز الميزانية
 - [ ] مزامنة سحابية (اختيارية)
@@ -373,6 +377,7 @@ String sanitizeData(String text) {
 - 🔄 **Automatic Monitoring**: Automatically track financial transactions from bank notifications
 - 🤖 **Advanced AI**: Uses Llama 3.2 model for transaction analysis and data extraction
 - 📊 **Comprehensive Reports**: Detailed expense view by merchant and category
+- 📑 **Data Export**: Ability to export all reports and transactions to an Excel file
 - 🏷️ **Smart Classification**: Automatic transaction categorization with custom categories
 - 🌙 **Modern Interface**: Material 3 design with dark mode support
 - 🌐 **Multi-language Support**: Full interface in Arabic and English
