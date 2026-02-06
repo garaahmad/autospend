@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HuggingFaceService {
-  final String _token = 'YOUR_HUGGING_FACE_TOKEN_HERE';
+  final String _token = 'YOUR_HUGGINGFACE_TOKEN';
   final String _model = 'meta-llama/Llama-3.2-3B-Instruct';
   final String _baseUrl = 'https://router.huggingface.co/v1/chat/completions';
 

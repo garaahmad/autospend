@@ -342,22 +342,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
       }
 
       await Permission.notification.request();
-      await Permission.sms.request();
 
-      final smsGranted = await Permission.sms.isGranted;
-      if (!smsGranted && mounted) {
+      final notificationGranted = await Permission.notification.isGranted;
+      if (!notificationGranted && mounted) {
         final settings = context.read<SettingsProvider>();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              AppTranslations.get(
-                'sms_permission_required',
-                settings.locale.languageCode,
-              ),
+              settings.locale.languageCode == 'ar'
+                  ? 'يرجى تفعيل إذن الإشعارات لاستلام التنبيهات'
+                  : 'Please enable notification permission to receive alerts',
             ),
           ),
         );
-        return;
+        // We don't return here because the main functionality (reading other apps' notifications)
+        // works via the Listener Service permission, not this standard runtime permission.
+        // This permission is only for *posting* our own notifications.
       }
 
       await service.startService();
