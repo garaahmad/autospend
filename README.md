@@ -7,383 +7,87 @@
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-lightgrey?style=for-the-badge)
 
-**تطبيق ذكي لتتبع المصروفات تلقائياً باستخدام الذكاء الاصطناعي**
-
-[العربية](#-نظرة-عامة) | [English](#-overview)
+**Smart Expense Tracker Powered by Artificial Intelligence**
 
 </div>
 
 ---
-
-## 📱 نظرة عامة
-
-**AutoSpend AI** هو تطبيق Flutter متطور يستخدم الذكاء الاصطناعي لتتبع مصروفاتك المالية تلقائياً من خلال تحليل إشعارات البنوك والرسائل النصية. يوفر التطبيق لوحة تحكم ذكية، تقارير مفصلة، ونظام تصنيف متقدم للمعاملات المالية.
-
-### ✨ المميزات الرئيسية
-
-- 🔄 **مراقبة تلقائية**: تتبع المعاملات المالية تلقائياً من إشعارات البنوك
-- 🤖 **ذكاء اصطناعي متقدم**: استخدام نموذج Llama 3.2 لتحليل المعاملات واستخراج البيانات
-- 📊 **تقارير شاملة**: عرض تفصيلي للمصروفات حسب التاجر والفئة
-- 📑 **تصدير للبيانات**: إمكانية تصدير جميع التقارير والمعاملات لملف Excel
-- 🏷️ **تصنيف ذكي**: تصنيف تلقائي للمعاملات مع إمكانية إضافة فئات مخصصة
-- 🌙 **واجهة عصرية**: تصميم Material 3 مع دعم الوضع الليلي
-- 🌐 **دعم متعدد اللغات**: واجهة كاملة بالعربية والإنجليزية
-- 💾 **قاعدة بيانات محلية**: تخزين آمن للبيانات باستخدام SQLite
-- 🔔 **خدمة خلفية**: عمل مستمر في الخلفية لالتقاط الإشعارات
-- 🔗 **Deep Links**: دعم iOS Shortcuts للإضافة السريعة للمعاملات
-
----
-
-## 🎯 حالات الاستخدام
-
-- **للأفراد**: تتبع المصروفات الشخصية وإدارة الميزانية
-- **للعائلات**: مراقبة النفقات العائلية وتحليل أنماط الإنفاق
-- **للمستقلين**: تتبع نفقات العمل والمشاريع
-- **للطلاب**: إدارة المصروف الشهري ومراقبة الإنفاق
-
----
-
-## 🛠️ التقنيات المستخدمة
-
-### Frontend & UI
-- **Flutter 3.10.7** - إطار عمل تطوير التطبيقات
-- **Material Design 3** - نظام التصميم
-- **Google Fonts** - خطوط Cairo و Outfit
-- **Provider** - إدارة الحالة
-
-### AI & Backend
-- **Hugging Face API** - واجهة برمجية للذكاء الاصطناعي
-- **Llama 3.2 3B Instruct** - نموذج اللغة الكبير لتحليل المعاملات
-- **Google Generative AI** - دعم إضافي للذكاء الاصطناعي
-
-### Data & Storage
-- **SQLite (sqflite)** - قاعدة بيانات محلية
-- **SharedPreferences** - تخزين الإعدادات
-- **Excel** - لتصدير البيانات والتقارير
-- **Path Provider** - إدارة مسارات الملفات
-
-### Services & Permissions
-- **Flutter Background Service** - خدمة العمل في الخلفية
-- **Notification Listener Service** - الاستماع للإشعارات
-- **Permission Handler** - إدارة الأذونات
-- **App Links** - Deep linking للتكامل مع iOS Shortcuts
-
-### Localization
-- **flutter_localizations** - دعم اللغات المتعددة
-- **intl** - تنسيق التواريخ والأرقام
-
----
-
-## 📦 البنية المعمارية
-
-```
-lib/
-├── main.dart                          # نقطة الدخول الرئيسية
-├── providers/
-│   └── settings_provider.dart        # إدارة الإعدادات والحالة
-├── services/
-│   ├── background_service.dart       # خدمة العمل في الخلفية
-│   ├── database_service.dart         # إدارة قاعدة البيانات
-│   └── huggingface_service.dart      # تكامل الذكاء الاصطناعي
-└── utils/
-    └── translations.dart             # ملفات الترجمة
-```
-
-### الشاشات الرئيسية
-
-1. **DashboardScreen** - لوحة التحكم الرئيسية
-   - عرض حالة المراقبة
-   - ملخص المصروفات اليومية والشهرية
-   - آخر 5 معاملات
-
-2. **TransactionsHistoryScreen** - سجل المعاملات
-   - عرض جميع المعاملات مجمعة حسب التاجر
-   - إجمالي المبلغ لكل تاجر
-   - إمكانية حذف المعاملات
-
-3. **ReportsScreen** - التقارير والإحصائيات
-   - تقارير تفصيلية حسب الفئة
-   - رسوم بيانية للإنفاق
-   - تحليل الأنماط
-   - **جديد**: تصدير التقرير لملف Excel
-
-4. **SettingsScreen** - الإعدادات
-   - تبديل اللغة (عربي/إنجليزي)
-   - تبديل الوضع الليلي/النهاري
-   - إدارة الأذونات
-
----
-
-## 🚀 البدء
-
-### المتطلبات الأساسية
-
-- Flutter SDK 3.10.7 أو أحدث
-- Dart SDK 3.10.7 أو أحدث
-- Android Studio / VS Code
-- حساب Hugging Face (للحصول على API Token)
-
-### التثبيت
-
-1. **استنساخ المشروع**
-```bash
-git clone https://github.com/garaahmad/autospend.git
-cd autospend
-```
-
-2. **تثبيت الحزم**
-```bash
-flutter pub get
-```
-
-3. **إعداد Hugging Face API**
-   - قم بإنشاء حساب على [Hugging Face](https://huggingface.co/)
-   - احصل على API Token من [Settings > Access Tokens](https://huggingface.co/settings/tokens)
-   - افتح ملف `lib/services/huggingface_service.dart`
-   - استبدل `_token` بالـ Token الخاص بك:
-   ```dart
-   final String _token = 'YOUR_HUGGINGFACE_TOKEN_HERE';
-   ```
-
-4. **تشغيل التطبيق**
-```bash
-flutter run
-```
-
----
-
-## ⚙️ الإعدادات والأذونات
-
-### Android
-
-يحتاج التطبيق للأذونات التالية (مُعرّفة في `AndroidManifest.xml`):
-
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.RECEIVE_SMS" />
-<uses-permission android:name="android.permission.READ_SMS" />
-<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-<uses-permission android:name="android.permission.WAKE_LOCK" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-```
-
-### iOS
-
-للتكامل مع iOS Shortcuts:
-
-1. افتح تطبيق **Shortcuts** على iPhone
-2. أنشئ Shortcut جديد
-3. أضف إجراء "Get Text from Input"
-4. أضف إجراء "Open URL"
-5. استخدم الصيغة: `autospend://parse?content=[النص]`
-
----
-
-## 🔧 كيفية العمل
-
-### 1. التقاط الإشعارات
-```dart
-// background_service.dart
-NotificationListenerService.notificationsStream.listen((event) {
-  // معالجة الإشعار
-});
-```
-
-### 2. تحليل النص بالذكاء الاصطناعي
-```dart
-// huggingface_service.dart
-final analysis = await analyzeNotification(notificationText);
-// النتيجة: {
-//   "is_banking": true,
-//   "merchant": "Starbucks",
-//   "amount": 25.5,
-//   "currency": "SAR",
-//   "category": "Coffee & Drinks"
-// }
-```
-
-### 3. حفظ المعاملة
-```dart
-// database_service.dart
-await insertTransaction(TransactionModel(
-  merchant: analysis['merchant'],
-  amount: analysis['amount'],
-  currency: analysis['currency'],
-  category: analysis['category'],
-  date: DateTime.now().toIso8601String(),
-));
-```
-
-### 4. عرض البيانات
-- تحديث تلقائي كل 5 ثوانٍ
-- إشعارات فورية للمعاملات الجديدة
-- تجميع حسب التاجر والفئة
-
----
-
-## 📊 نموذج البيانات
-
-### TransactionModel
-
-```dart
-class TransactionModel {
-  final int? id;
-  final String merchant;        // اسم التاجر
-  final double amount;          // المبلغ
-  final String currency;        // العملة (SAR, USD, etc.)
-  final String category;        // الفئة
-  final String date;            // التاريخ (ISO 8601)
-  final String originalText;    // النص الأصلي
-  final String? cardDigits;     // آخر 4 أرقام من البطاقة
-}
-```
-
----
-
-## 🎨 التصميم والواجهة
-
-### نظام الألوان
-
-**الوضع النهاري:**
-- Background: `#F8F9FA`
-- Card: `#FFFFFF`
-- Primary: `Deep Purple Accent`
-
-**الوضع الليلي:**
-- Background: `#0F0E17`
-- Card: `#1B1A23`
-- Primary: `Deep Purple Accent`
-
-### الخطوط
-- **Cairo**: للنصوص العربية
-- **Outfit**: للنصوص الإنجليزية
-
----
-
-## 🌍 الترجمة
-
-التطبيق يدعم اللغتين العربية والإنجليزية بشكل كامل:
-
-```dart
-// utils/translations.dart
-static final Map<String, Map<String, String>> _translations = {
-  'home': {'ar': 'الرئيسية', 'en': 'Home'},
-  'history': {'ar': 'السجل', 'en': 'History'},
-  'reports': {'ar': 'التقارير', 'en': 'Reports'},
-  // ...
-};
-```
-
----
-
-## 🔒 الأمان والخصوصية
-
-- ✅ **تخزين محلي فقط**: جميع البيانات تُحفظ على الجهاز
-- ✅ **تعقيم البيانات**: إزالة البيانات الحساسة قبل إرسالها للـ AI
-- ✅ **لا توجد خوادم خارجية**: باستثناء Hugging Face API للتحليل
-- ✅ **أذونات محدودة**: طلب الأذونات الضرورية فقط
-
-```dart
-String sanitizeData(String text) {
-  return text.replaceAll(RegExp(r'\d{10,}'), '[SENSITIVE DATA]');
-}
-```
-
----
-
-## 📈 خطط التطوير المستقبلية
-
-- [ ] دعم المزيد من البنوك والعملات
-- [x] تصدير التقارير بصيغة PDF/Excel
-- [ ] رسوم بيانية تفاعلية
-- [ ] تنبيهات ذكية عند تجاوز الميزانية
-- [ ] مزامنة سحابية (اختيارية)
-- [ ] دعم الفواتير والإيصالات المصورة
-- [ ] تكامل مع تطبيقات المحاسبة
-
----
-
-## 🤝 المساهمة
-
-نرحب بالمساهمات! إذا كنت ترغب في المساهمة:
-
-1. Fork المشروع
-2. أنشئ فرع للميزة الجديدة (`git checkout -b feature/AmazingFeature`)
-3. Commit التغييرات (`git commit -m 'Add some AmazingFeature'`)
-4. Push للفرع (`git push origin feature/AmazingFeature`)
-5. افتح Pull Request
-
----
-
-## 🐛 الإبلاغ عن المشاكل
-
-إذا واجهت أي مشكلة، يرجى فتح [Issue](https://github.com/garaahmad/autospend/issues) مع:
-- وصف المشكلة
-- خطوات إعادة إنتاج المشكلة
-- لقطات شاشة (إن أمكن)
-- معلومات الجهاز ونظام التشغيل
-
----
-
-## 📄 الترخيص
-
-هذا المشروع مرخص تحت رخصة MIT - انظر ملف [LICENSE](LICENSE) للتفاصيل.
-
----
-
-## 👨‍💻 المطور
-
-**Ahmad Gara**
-- GitHub: [@garaahmad](https://github.com/garaahmad)
-
----
-
-## 🙏 شكر وتقدير
-
-- [Flutter Team](https://flutter.dev/) - إطار العمل الرائع
-- [Hugging Face](https://huggingface.co/) - منصة الذكاء الاصطناعي
-- [Meta AI](https://ai.meta.com/) - نموذج Llama 3.2
-- [Google Fonts](https://fonts.google.com/) - الخطوط المستخدمة
-
----
-
-## 📞 الدعم
-
-إذا كان لديك أي استفسار:
-- افتح [Issue](https://github.com/garaahmad/autospend/issues)
-- تواصل عبر GitHub
-
----
-
-<div align="center">
-
-**صُنع بـ ❤️ باستخدام Flutter**
-
-⭐ إذا أعجبك المشروع، لا تنسَ إعطائه نجمة!
-
-</div>
-
----
-
-# 🌐 English Version
 
 ## 📱 Overview
 
-**AutoSpend AI** is an advanced Flutter application that uses artificial intelligence to automatically track your financial expenses by analyzing bank notifications and SMS messages. The app provides a smart dashboard, detailed reports, and an advanced transaction classification system.
+**AutoSpend AI** is a cutting-edge Flutter application that leverages Artificial Intelligence to automatically track your financial expenses by analyzing bank notifications and SMS messages. The app provides a smart dashboard, detailed reports, and an advanced transaction classification system, giving you complete control over your financial life without manual data entry.
 
 ### ✨ Key Features
 
-- 🔄 **Automatic Monitoring**: Automatically track financial transactions from bank notifications
-- 🤖 **Advanced AI**: Uses Llama 3.2 model for transaction analysis and data extraction
-- 📊 **Comprehensive Reports**: Detailed expense view by merchant and category
-- 📑 **Data Export**: Ability to export all reports and transactions to an Excel file
-- 🏷️ **Smart Classification**: Automatic transaction categorization with custom categories
-- 🌙 **Modern Interface**: Material 3 design with dark mode support
-- 🌐 **Multi-language Support**: Full interface in Arabic and English
-- 💾 **Local Database**: Secure data storage using SQLite
-- 🔔 **Background Service**: Continuous background operation to capture notifications
-- 🔗 **Deep Links**: iOS Shortcuts support for quick transaction addition
+- 🔄 **Automatic Monitoring**: Seamlessly tracks financial transactions from bank SMS and notifications.
+- 🤖 **Advanced AI Analysis**: Utilizes the **Llama 3.2** model to precisely parse transactions and extract metadata.
+- 📊 **Comprehensive Reports**: Visualizes spending habits by merchant, category, and time period.
+- 📑 **Excel Export**: detailed export of all transactions and reports to Excel spreadsheets.
+- 🏷️ **Smart Classification**: Automatically categorizes transactions with support for custom user-defined categories.
+- 🌙 **Modern Design**: Sleek Material 3 interface with full Dark Mode support.
+- 🌐 **Multi-Language**: Fully localized interface in **English** and **Arabic**.
+- 💾 **Local First**: Secure, offline-first architecture using SQLite for data privacy.
+- 🔔 **Background Service**: Continuous background operation ensures no transaction is missed.
+- 🔗 **Deep Linking**: iOS Shortcuts integration for quick manual entry via voice or text.
+
+---
+
+## 🎯 Use Cases
+
+- **Individuals**: Effortless personal expense tracking and budget management.
+- **Families**: Monitor household spending and analyze collective financial patterns.
+- **Freelancers**: Separate and track business-related expenses automatically.
+- **Students**: Manage monthly allowances and monitor discretionary spending.
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend & UI
+- **Flutter 3.10.7**: Core cross-platform framework.
+- **Material Design 3**: Modern UI component system.
+- **Google Fonts (Outfit & Cairo)**: Premium typography.
+- **Provider**: Efficient state management.
+
+### AI & Backend
+- **Hugging Face API**: Gateway to Large Language Models.
+- **Llama 3.2 3B Instruct**: The core intelligence for text analysis.
+- **Google Generative AI**: Supplementary AI capabilities.
+
+### Data & Storage
+- **SQLite (sqflite)**: Robust local relational database.
+- **SharedPreferences**: Lightweight key-value storage for settings.
+- **Excel**: Library for generating spreadsheet reports.
+
+### Services & System
+- **Flutter Background Service**: Manages persistent background execution.
+- **Notification Listener Service**: Captures incoming notification data.
+- **Permission Handler**: Manages Android/iOS permissions.
+- **App Links**: Handles deep linking for iOS shortcuts.
+
+---
+
+## 📦 Project Architecture
+
+```
+lib/
+├── main.dart                          # Application Entry Point & Core Logic
+├── providers/
+│   └── settings_provider.dart        # State Management (Theme, Locale)
+├── services/
+│   ├── background_service.dart       # Background Process Manager
+│   ├── database_service.dart         # SQLite Database Controller
+│   └── huggingface_service.dart      # AI Integration Service
+└── utils/
+    └── translations.dart             # Localization Resources
+```
+
+### Key Screens
+
+1.  **DashboardScreen**: The command center. Displays live monitoring status, daily/monthly summaries, and recent activity.
+2.  **TransactionsHistoryScreen**: A consolidated view of spending history, grouped by merchant for cleaner tracking.
+3.  **ReportsScreen**: Analytical view with categorical breakdowns and one-click Excel export.
+4.  **SettingsScreen**: Configuration for themes, language, and system permissions.
 
 ---
 
@@ -391,43 +95,108 @@ String sanitizeData(String text) {
 
 ### Prerequisites
 
-- Flutter SDK 3.10.7 or newer
-- Dart SDK 3.10.7 or newer
+- Flutter SDK 3.10.7+
+- Dart SDK 3.10.7+
 - Android Studio / VS Code
-- Hugging Face account (for API Token)
+- Hugging Face Account (for API Token)
 
 ### Installation
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/garaahmad/autospend.git
-cd autospend
+1.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/garaahmad/autospend.git
+    cd autospend
+    ```
+
+2.  **Install Dependencies**
+    ```bash
+    flutter pub get
+    ```
+
+3.  **Configure AI Service**
+    - Obtain an API Token from [Hugging Face Settings](https://huggingface.co/settings/tokens).
+    - Open `lib/services/huggingface_service.dart`.
+    - Replace the placeholder with your token:
+      ```dart
+      final String _token = 'YOUR_HUGGINGFACE_TOKEN_HERE';
+      ```
+
+4.  **Run the App**
+    ```bash
+    flutter run
+    ```
+
+---
+
+## ⚙️ Configuration & Permissions
+
+### Android
+
+The app requires specific permissions to function effectively (configured in `AndroidManifest.xml`):
+
+```xml
+<uses-permission android:name="android.permission.RECEIVE_SMS" />
+<uses-permission android:name="android.permission.READ_SMS" />
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ```
 
-2. **Install dependencies**
-```bash
-flutter pub get
-```
+### iOS Setup
 
-3. **Setup Hugging Face API**
-   - Create an account on [Hugging Face](https://huggingface.co/)
-   - Get your API Token from [Settings > Access Tokens](https://huggingface.co/settings/tokens)
-   - Open `lib/services/huggingface_service.dart`
-   - Replace `_token` with your token:
-   ```dart
-   final String _token = 'YOUR_HUGGINGFACE_TOKEN_HERE';
-   ```
+To utilize the **iOS Shortcuts** integration:
+1.  Open the **Shortcuts** app.
+2.  Create a new shortcut.
+3.  Add "Get Text from Input".
+4.  Add "Open URL" with the scheme: `autospend://parse?content=[Input]`.
 
-4. **Run the app**
-```bash
-flutter run
-```
+---
+
+## 🔧 How It Works
+
+1.  **Capture**: The background service intercepts relevant notifications or SMS.
+2.  **Analyze**: The text is securely sent to the Llama 3.2 model via Hugging Face.
+    ```dart
+    // Returns: { "is_banking": true, "merchant": "Uber", "amount": 15.50 ... }
+    ```
+3.  **Process**: The app validates the data, extracts amounts, currencies, and categories.
+4.  **Store**: Data is encrypted and saved to the local SQLite database.
+5.  **Notify**: The UI updates instantly via Streams to reflect the new balance.
+
+---
+
+## 🔒 Privacy & Security
+
+- **Local Storage**: Your financial data never leaves your device (except for anonymized analysis).
+- **Data Sanitization**: Sensitive information (like account numbers) is redacted before AI processing.
+- **Minimal Permissions**: We only request what is strictly necessary for the app to function.
+
+---
+
+## 📈 Future Roadmap
+
+- [ ] Support for multi-currency wallets.
+- [ ] Advanced graphical charts and trend analysis.
+- [ ] Budget limit alerts and smart financial insights.
+- [ ] Optional cloud backup integration.
+- [ ] Receipt scanning and OCR support.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+1.  Fork the project.
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3.  Commit your changes.
+4.  Push to the branch.
+5.  Open a Pull Request.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
@@ -442,6 +211,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ using Flutter**
 
-⭐ If you like this project, don't forget to give it a star!
+⭐ Star this repo if you find it useful!
 
 </div>
