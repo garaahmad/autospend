@@ -1,1 +1,19 @@
+# تجاهل جميع ملفات HTML و CSS و JavaScript من الإحصائيات
+*.html linguist-vendored
+*.xml linguist-vendored
+*.js linguist-vendored
+*.css linguist-vendored
+
+# تجاهل مجلدات المنصات (Web, Android, iOS) لأنها تحتوي على كود ناتج عن الفريمورك
 web/* linguist-vendored
+android/* linguist-vendored
+ios/* linguist-vendored
+macos/* linguist-vendored
+linux/* linguist-vendored
+windows/* linguist-vendored
+
+# إذا أردت إخفاء C++ و CMake أيضاً (كما يظهر في الصورة عندك)
+*.cpp linguist-vendored
+*.h linguist-vendored
+CMakeLists.txt linguist-vendored
+*.cmake linguist-vendored
