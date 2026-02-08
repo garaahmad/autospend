@@ -21,16 +21,20 @@ Analyze the following text from a mobile notification.
 Context: You are a financial transaction extractor for a budgeting app.
 
 CRITICAL RULES:
-1. ONLY return 'is_banking': true if this is a confirmed financial deduction, purchase, withdrawal, or deposit.
-2. If the text is about 'Backup in progress', 'USB connected', 'App update', 'System message', 'OTP code', or general non-financial info, set 'is_banking': false.
+1. ONLY return 'is_banking': true if this is an OUTGOING financial deduction (خصم), purchase (شراء/مشتريات/سحب), or spending.
+2. EXPLICITLY set 'is_banking': false for:
+   - Incoming transfers (حوالة واردة / استلام مبلغ / تم استلام).
+   - Account information updates (تحديث معلومات / تحديث مستخدم).
+   - OTP codes, backup alerts, system messages, USB connections.
+   - Promotional messages or marketing.
 3. If 'is_banking' is true, you MUST find a valid 'amount' and 'currency'.
-4. Extract 'merchant' strictly. In Arabic messages, it usually follows 'من:' (e.g., 'من:ICECREAMER' -> merchant is 'ICECREAMER'). In English, it follows 'at:'.
-5. Extract 'card_digits' (e.g., last 4 digits mentioned).
+4. Extract 'merchant' strictly. In Arabic messages, it usually follows 'لدى:' or 'في:'. In English, it follows 'at:'.
+5. Extract 'card_digits' if mentioned.
 6. Generate a short, descriptive 'category' based on the merchant.
 7. Return ONLY a valid JSON object.
 
 Format Example:
-{"is_banking": true, "merchant": "Starbucks", "amount": 25.5, "currency": "SAR", "card_digits": "1234", "category": "Coffee & Drinks"}
+{"is_banking": true, "merchant": "Starbucks", "amount": 25.5, "currency": "SAR", "card_digits": "1234", "category": "Food & Drinks"}
 
 Text to analyze:
 """;
